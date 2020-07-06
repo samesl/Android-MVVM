@@ -3,7 +3,9 @@ package com.android.saman.sample.androidmvvm.di.modules
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.content.res.Resources
+import androidx.room.Room
 import com.android.saman.sample.androidmvvm.MainApplication
+import com.android.saman.sample.androidmvvm.persistence.room.AndroidDatabase
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -25,8 +27,18 @@ class ApplicationModule(private val app: MainApplication) {
     @Singleton
     fun provideResources(): Resources = app.resources
 
-    companion object
-    {
+    @Provides
+    @Singleton
+    fun provideDatabase() : AndroidDatabase {
+        return Room.databaseBuilder(app.applicationContext,
+            AndroidDatabase::class.java, ANDROID_DATABASE_NAME)
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+
+    companion object {
         private const val SHARED_PREFERENCE_NAME = "Android_SAMPLE"
+        private const val ANDROID_DATABASE_NAME = "Android_DATABASE"
     }
 }
