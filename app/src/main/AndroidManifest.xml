@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.saman.sample.androidmvvm">
+
+    <!--Internet Permission-->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <!-- Second Step of setting up Dagger 2 - Add Name to application tag-->
     <application
         android:name=".MainApplication"
