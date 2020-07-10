@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.content.res.Resources
 import androidx.room.Room
 import com.android.saman.sample.androidmvvm.MainApplication
+import com.android.saman.sample.androidmvvm.di.scopes.ApplicationScope
 import com.android.saman.sample.androidmvvm.persistence.room.AndroidDatabase
 import com.android.saman.sample.androidmvvm.repository.RetrofitAPIs
 import dagger.Module
@@ -22,19 +23,19 @@ class ApplicationModule(private val app: MainApplication) {
 
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideApplication() = app
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideSharedPreferences(): SharedPreferences = app.getSharedPreferences(SHARED_PREFERENCE_NAME ,MODE_PRIVATE)
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideResources(): Resources = app.resources
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideDatabase() : AndroidDatabase {
         return Room.databaseBuilder(app.applicationContext,
             AndroidDatabase::class.java, ANDROID_DATABASE_NAME)
@@ -43,7 +44,7 @@ class ApplicationModule(private val app: MainApplication) {
     }
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideRetrofit() : RetrofitAPIs {
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY

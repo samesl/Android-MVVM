@@ -3,6 +3,11 @@ package com.android.saman.sample.androidmvvm.viewmodel
 import androidx.lifecycle.ViewModel
 import com.android.saman.sample.androidmvvm.persistence.room.SampleEntity
 import com.android.saman.sample.androidmvvm.repository.BaseAndroidRepository
+import io.reactivex.Completable
+import io.reactivex.Flowable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 class BaseViewModel @Inject constructor(private val repository: BaseAndroidRepository) :
@@ -11,36 +16,41 @@ class BaseViewModel @Inject constructor(private val repository: BaseAndroidRepos
     //empty test viewModel all should be gone
 
     private var testValue: String = "This means the viewModelWorks fine with Dagger 2!"
+    private var compositeDisposable : CompositeDisposable = CompositeDisposable()
 
     fun returnTestValue() = testValue
 
     init {
-        insertDataOne()
-        insertDataTwo()
-        insertDataThree()
+        compositeDisposable.add(insertDataOne()
+            .andThen(insertDataTwo())
+            .andThen(insertDataThree())
+            .subscribeOn(Schedulers.io())
+            .doOnComplete { Timber.d("Fake Insertion finished! ") }
+            .subscribe()
+        )
     }
 
-    private fun insertDataOne() {
+    private fun insertDataOne() : Completable {
         val sampleEntity = SampleEntity()
         sampleEntity.firstName = "Sam"
         sampleEntity.lastName = "Esl"
-        repository.insertIntoDatabase(sampleEntity)
+        return repository.insertIntoDatabase(sampleEntity)
     }
 
-    private fun insertDataTwo() {
+    private fun insertDataTwo(): Completable {
         val sampleEntity = SampleEntity()
         sampleEntity.firstName = "Tar"
         sampleEntity.lastName = "Amr"
-        repository.insertIntoDatabase(sampleEntity)
+        return repository.insertIntoDatabase(sampleEntity)
     }
 
-    private fun insertDataThree() {
+    private fun insertDataThree(): Completable {
         val sampleEntity = SampleEntity()
         sampleEntity.firstName = "Ehs"
         sampleEntity.lastName = "Esl"
-        repository.insertIntoDatabase(sampleEntity)
+       return repository.insertIntoDatabase(sampleEntity)
     }
 
-    fun getAllSampleData() = repository.listAllSampleEntities()
+    fun getAllSampleData()  = repository.listAllSampleEntities()
 
 }
