@@ -4,14 +4,21 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.android.saman.sample.androidmvvm.di.modules.ActivityModule
 import com.android.saman.sample.androidmvvm.utils.app
+import com.android.saman.sample.androidmvvm.viewmodel.BaseViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import timber.log.Timber
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
     private val component by lazy { app.applicationComponent().plus(ActivityModule(this)) }
+    @Inject
+    lateinit var factory : ViewModelProvider.Factory
+    private lateinit var baseViewModel: BaseViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +26,10 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
 
         component.inject(this)
+
+        baseViewModel = ViewModelProvider(this,factory)[BaseViewModel::class.java]
+
+        Timber.d("ViewModel is working fine and the result is ${baseViewModel.returnTestValue()}")
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
