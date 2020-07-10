@@ -6,9 +6,15 @@ import android.content.res.Resources
 import androidx.room.Room
 import com.android.saman.sample.androidmvvm.MainApplication
 import com.android.saman.sample.androidmvvm.persistence.room.AndroidDatabase
+import com.android.saman.sample.androidmvvm.repository.RetrofitAPIs
 import dagger.Module
 import dagger.Provides
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
+
 
 //Fifth step of setting up dagger 2
 @Module
@@ -36,9 +42,24 @@ class ApplicationModule(private val app: MainApplication) {
             .build()
     }
 
+    @Provides
+    @Singleton
+    fun provideRetrofit() : RetrofitAPIs {
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+        return retrofit.create(RetrofitAPIs::class.java)
+    }
+
 
     companion object {
         private const val SHARED_PREFERENCE_NAME = "Android_SAMPLE"
         private const val ANDROID_DATABASE_NAME = "Android_DATABASE"
+        private const val BASE_URL = "" //TODO: TO BE REPLACED WITH A REAL URL
     }
 }
