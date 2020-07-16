@@ -8,8 +8,13 @@ import com.android.saman.sample.androidmvvm.MainApplication
 import com.android.saman.sample.androidmvvm.di.scopes.ApplicationScope
 import com.android.saman.sample.androidmvvm.persistence.room.AndroidDatabase
 import com.android.saman.sample.androidmvvm.repository.RetrofitAPIs
+import com.github.pwittchen.reactivenetwork.library.rx2.Connectivity
+import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork
 import dagger.Module
 import dagger.Provides
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -57,10 +62,16 @@ class ApplicationModule(private val app: MainApplication) {
         return retrofit.create(RetrofitAPIs::class.java)
     }
 
+    @Provides
+    @ApplicationScope
+    fun provideNetworkConnectionSource() : Observable<Connectivity> {
+        return ReactiveNetwork.observeNetworkConnectivity(app)
+    }
+
 
     companion object {
         private const val SHARED_PREFERENCE_NAME = "Android_SAMPLE"
         private const val ANDROID_DATABASE_NAME = "Android_DATABASE"
-        private const val BASE_URL = "" //TODO: TO BE REPLACED WITH A REAL URL
+        private const val BASE_URL = "https://www.google.com/"
     }
 }

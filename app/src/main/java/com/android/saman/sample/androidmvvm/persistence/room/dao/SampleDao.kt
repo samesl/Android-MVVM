@@ -1,7 +1,7 @@
-package com.android.saman.sample.androidmvvm.persistence.room
+package com.android.saman.sample.androidmvvm.persistence.room.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.android.saman.sample.androidmvvm.persistence.room.entity.SampleEntity
 import io.reactivex.Flowable
 
 @Dao

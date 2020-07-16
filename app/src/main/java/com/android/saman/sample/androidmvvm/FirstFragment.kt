@@ -48,7 +48,7 @@ class FirstFragment : Fragment() {
         compositeDisposable.add(baseViewModel.getAllSampleData().subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                val sampleEntity = "First Name : " + it.firstName + " Last Name : " + it.lastName
+                val sampleEntity = "First Name : " + it.data?.firstName + " Last Name : " + it.data?.lastName
                 textview_first.text = sampleEntity
             })
         view.findViewById<Button>(R.id.button_first).setOnClickListener {

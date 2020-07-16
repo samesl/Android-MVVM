@@ -1,10 +1,9 @@
 package com.android.saman.sample.androidmvvm.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.android.saman.sample.androidmvvm.persistence.room.SampleEntity
+import com.android.saman.sample.androidmvvm.persistence.room.entity.SampleEntity
 import com.android.saman.sample.androidmvvm.repository.BaseAndroidRepository
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -31,21 +30,24 @@ class BaseViewModel @Inject constructor(private val repository: BaseAndroidRepos
     }
 
     private fun insertDataOne() : Completable {
-        val sampleEntity = SampleEntity()
+        val sampleEntity =
+            SampleEntity()
         sampleEntity.firstName = "Sam"
         sampleEntity.lastName = "Esl"
         return repository.insertIntoDatabase(sampleEntity)
     }
 
     private fun insertDataTwo(): Completable {
-        val sampleEntity = SampleEntity()
+        val sampleEntity =
+            SampleEntity()
         sampleEntity.firstName = "Tar"
         sampleEntity.lastName = "Amr"
         return repository.insertIntoDatabase(sampleEntity)
     }
 
     private fun insertDataThree(): Completable {
-        val sampleEntity = SampleEntity()
+        val sampleEntity =
+            SampleEntity()
         sampleEntity.firstName = "Ehs"
         sampleEntity.lastName = "Esl"
        return repository.insertIntoDatabase(sampleEntity)

@@ -70,6 +70,10 @@ dependencies {
     //  RxJava - Will be completed for now only support for Room
     implementation "androidx.room:room-rxjava2:2.2.5"
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    // RxRelay
+    implementation 'com.jakewharton.rxrelay3:rxrelay:3.0.0'
+    // Reactive Network
+    implementation 'com.github.pwittchen:reactivenetwork-rx2:3.0.8'
 
     //Android - Timber (Logger that provides Utility on top of Android's normal "Log" class.)
     implementation 'com.jakewharton.timber:timber:4.7.1'
