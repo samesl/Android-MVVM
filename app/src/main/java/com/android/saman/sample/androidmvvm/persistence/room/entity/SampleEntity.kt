@@ -1,4 +1,4 @@
-package com.android.saman.sample.androidmvvm.persistence.room
+package com.android.saman.sample.androidmvvm.persistence.room.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
